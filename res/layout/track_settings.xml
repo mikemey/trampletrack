@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<TextView android:id="@+id/TextView02" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Track settings"></TextView>
+	
+	<Button android:layout_height="wrap_content" 
+		android:layout_width="fill_parent"
+		android:text="Set start track point"
+		android:id="@+id/setStartPointBtn">
+	</Button>
+
+	<Button android:layout_height="wrap_content" 
+		android:layout_width="fill_parent"
+		android:text="Set Direction of Track"
+		android:id="@+id/setDirectionBtn">
+	</Button>
+	
+	<Button android:layout_height="wrap_content" 
+		android:layout_width="fill_parent" 
+		android:text="Set visible track points"
+		android:id="@+id/setVisiblePointsBtn">
+	</Button>
+	
+	<Button android:layout_height="wrap_content" 
+		android:layout_width="fill_parent" 
+		android:text="Set number of skipped points"
+		android:id="@+id/setSkippedPointsBtn">
+	</Button>
+
+</LinearLayout>
