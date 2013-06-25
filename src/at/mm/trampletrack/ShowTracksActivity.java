@@ -28,7 +28,7 @@ public class ShowTracksActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.var_list);
 		TextView header = (TextView) findViewById(R.id.list);
-		header.setText("Available tracks;");
+		header.setText("Available tracks:");
 		dba = DBAdapter.getInstance(null);
 
 		refreshTracks();

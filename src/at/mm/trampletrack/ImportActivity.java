@@ -2,6 +2,9 @@ package at.mm.trampletrack;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,6 +15,7 @@ import android.app.ListActivity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,6 +36,31 @@ public class ImportActivity extends ListActivity {
 		setContentView(R.layout.var_list);
 		myPath = (TextView) findViewById(R.id.list);
 		getDir(root);
+		
+		importDefaultTrackForTest();
+
+	}
+
+	private void importDefaultTrackForTest() {
+		try {
+			File sdCard = Environment.getExternalStorageDirectory();
+			File dir = new File (sdCard.getAbsolutePath() + "/dir1/dir2");
+			dir.mkdirs();
+			File file = new File(dir, "filename.gpx");
+			InputStream in = getAssets().open("SWCP13.gpx");
+			FileOutputStream f = new FileOutputStream(file);
+			
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+                f.write(buffer, 0, len1);
+            }
+            f.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void getDir(String dirPath) {

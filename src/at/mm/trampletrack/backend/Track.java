@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Track implements Serializable, Iterable<Coordinate> {
 	private static final long serialVersionUID = 5552388240915876671L;
 	private List<Coordinate> coordinates;
