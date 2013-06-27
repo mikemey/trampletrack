@@ -8,6 +8,9 @@
 package at.mm.trampletrack;
 
 public final class R {
+    public static final class array {
+        public static final int maptypes_array=0x7f070000;
+    }
     public static final class attr {
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
 <p>This may also be a reference to a resource (in the form
@@ -181,42 +184,29 @@ containing a value of this type.
     }
     public static final class id {
         public static final int TextView01=0x7f050005;
-        public static final int TextView02=0x7f05000e;
         public static final int deleteAllTracksBtn=0x7f050008;
         public static final int hybrid=0x7f050004;
         public static final int importBtn=0x7f050006;
-        public static final int list=0x7f050013;
-        public static final int mapLayers=0x7f050017;
+        public static final int list=0x7f05000c;
+        public static final int mapLayers=0x7f05000d;
         public static final int mapfragment=0x7f05000a;
-        public static final int mapview=0x7f05000b;
-        public static final int myLoc=0x7f050016;
-        public static final int nextWaypoint=0x7f050015;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int prevWaypoint=0x7f050014;
-        public static final int rowtext=0x7f05000d;
+        public static final int rowtext=0x7f05000b;
         public static final int satellite=0x7f050002;
-        public static final int selectTrack=0x7f050018;
-        public static final int setDirectionBtn=0x7f050010;
-        public static final int setSkippedPointsBtn=0x7f050012;
-        public static final int setStartPointBtn=0x7f05000f;
-        public static final int setVisiblePointsBtn=0x7f050011;
+        public static final int selectTrack=0x7f05000e;
         public static final int showFilesBtn=0x7f050007;
         public static final int showMapBtn=0x7f050009;
         public static final int terrain=0x7f050003;
-        public static final int trackSettings=0x7f050019;
-        public static final int zoom=0x7f05000c;
     }
     public static final class layout {
         public static final int main=0x7f030000;
         public static final int map=0x7f030001;
-        public static final int map_old=0x7f030002;
-        public static final int row=0x7f030003;
-        public static final int track_settings=0x7f030004;
-        public static final int var_list=0x7f030005;
+        public static final int row=0x7f030002;
+        public static final int var_list=0x7f030003;
     }
     public static final class menu {
-        public static final int mapmenu=0x7f070000;
+        public static final int mapmenu=0x7f080000;
     }
     public static final class string {
         public static final int app_name=0x7f060016;
@@ -295,6 +285,8 @@ containing a value of this type.
         public static final int location_client_ulr_inactive_age_under_13=0x7f060012;
         public static final int location_client_ulr_inactive_age_unknown=0x7f060013;
         public static final int location_client_ulr_inactive_unknown_restriction=0x7f060014;
+        public static final int select_maptype=0x7f060017;
+        public static final int select_othertrack=0x7f060018;
         public static final int show_files=0x7f060015;
     }
     public static final class styleable {

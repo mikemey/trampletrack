@@ -1,20 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/prevWaypoint"
-          android:title="Previous waypoint" 
-          android:icon="@drawable/back"/>
-    <item android:id="@+id/nextWaypoint"
-          android:title="Next waypoint" 
-          android:icon="@drawable/forward"/>
-    <item android:id="@+id/myLoc"
-          android:title="My Location" 
-          android:icon="@drawable/myloc"/>
     <item android:id="@+id/mapLayers"
-          android:title="Select layer" 
+          android:title="@string/select_maptype" 
           android:icon="@drawable/layer"/>
     <item android:id="@+id/selectTrack"
-          android:title="Select other track" 
+          android:title="@string/select_othertrack" 
           android:icon="@drawable/addtrack"/>
-    <item android:id="@+id/trackSettings"
-          android:title="Track settings" 
-          android:icon="@drawable/settings"/>
 </menu>

@@ -37,17 +37,39 @@ public class ImportActivity extends ListActivity {
 		myPath = (TextView) findViewById(R.id.list);
 		getDir(root);
 		
-		importDefaultTrackForTest();
-
+		copyDefaultTrackOnSDCardForTest();
 	}
 
-	private void importDefaultTrackForTest() {
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+
+		final File file = new File(path.get(position));
+		if (file.isDirectory()) {
+			getDir(path.get(position));
+		} else {
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setIcon(R.drawable.icon);
+			builder.setTitle("Import file:");
+			builder.setMessage(file.getName());
+			builder.setNegativeButton("Cancel", null);
+			builder.setPositiveButton("Import File", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					importTrackFile(file);
+				}
+			});
+			builder.show();
+		}
+	}
+
+	private void copyDefaultTrackOnSDCardForTest() {
 		try {
 			File sdCard = Environment.getExternalStorageDirectory();
-			File dir = new File (sdCard.getAbsolutePath() + "/dir1/dir2");
+			File dir = new File (sdCard.getAbsolutePath() + "/testData");
 			dir.mkdirs();
-			File file = new File(dir, "filename.gpx");
-			InputStream in = getAssets().open("SWCP13.gpx");
+			String fileName = "SWCP13.gpx";
+			File file = new File(dir, fileName);
+			InputStream in = getAssets().open(fileName);
 			FileOutputStream f = new FileOutputStream(file);
 			
             byte[] buffer = new byte[1024];
@@ -56,9 +78,7 @@ public class ImportActivity extends ListActivity {
                 f.write(buffer, 0, len1);
             }
             f.close();
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -108,29 +128,7 @@ public class ImportActivity extends ListActivity {
 		ArrayAdapter<String> fileList = new ArrayAdapter<String>(this, R.layout.row, item);
 		setListAdapter(fileList);
 	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		final File file = new File(path.get(position));
-		if (file.isDirectory()) {
-			getDir(path.get(position));
-		} else {
-			Builder builder = new AlertDialog.Builder(this);
-			builder.setIcon(R.drawable.icon);
-			builder.setTitle("Import file:");
-			builder.setMessage(file.getName());
-			builder.setNegativeButton("Cancel", null);
-			builder.setPositiveButton("Import File", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					importTrackFile(file);
-				}
-			});
-			builder.show();
-		}
-	}
-
+	
 	private void importTrackFile(File importFile) {
 		String msg = null;
 		try {

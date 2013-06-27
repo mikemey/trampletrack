@@ -2,4 +2,14 @@
 <resources>
     <string name="show_files">Select import file</string>
     <string name="app_name">TrampleTrack</string>
+    <string name="select_maptype">Select Map Type</string>
+    <string name="select_othertrack">Select Other Track</string>
+    
+    <string-array name="maptypes_array">
+        <item>Normal</item>
+        <item>Satellite</item>
+        <item>Terrain</item>
+        <item>Hybrid</item>
+    </string-array>
+    
 </resources>

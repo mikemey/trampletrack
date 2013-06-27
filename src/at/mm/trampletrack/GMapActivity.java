@@ -1,30 +1,24 @@
 package at.mm.trampletrack;
 
-import java.util.Iterator;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+import at.mm.trampletrack.dto.Coordinate;
+import at.mm.trampletrack.dto.Track;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import android.app.Activity;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import at.mm.trampletrack.dto.Coordinate;
-import at.mm.trampletrack.dto.Track;
-
 
 public class GMapActivity extends Activity {
 	private GoogleMap map;
-	private boolean showTrack;
-
-	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,36 +27,91 @@ public class GMapActivity extends Activity {
 		
 		MapFragment fragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment));
 		map = fragment.getMap();
+		map.setMyLocationEnabled(true);		
 
-		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		LatLng position = new LatLng(loc.getLatitude(), loc.getLongitude());
-		BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.myloc);
-		MarkerOptions options = new MarkerOptions().position(position).icon(icon );
-		map.addMarker(options);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 5));
-		map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-		
-//		mapView.getOverlays().add(new ZoomOverlay());
-//		locOverlay = new LocationOverlay(getApplicationContext(), mapView);
-//		locOverlay.enableMyLocation();
-//
-//		mapView.getOverlays().add(locOverlay);
-		
-		Bundle extras = getIntent().getExtras();
-		showTrack = extras != null;
-		if (showTrack) {
-			Track track = (Track) extras.getSerializable(Statics.TRACK_DATA_KEY);
-			Iterator<Coordinate> coordinates = track.iterator();
-			PolylineOptions polyOptions= new PolylineOptions();
-			while(coordinates.hasNext()){
-				Coordinate coord = coordinates.next();
-				polyOptions.add(new LatLng(coord.getLatitude(), coord.getLongitude()));		
+		updateTrack();
+	}
+
+   @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mapmenu, menu);   
+		return true;
+    }
+	
+   @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	   executeOption(item.getItemId());
+	   return true;
+   }
+
+	private void executeOption(int itemId) {
+
+		switch (itemId) {
+			case R.id.mapLayers:
+				showLayerOptions();
+				break;
+			case R.id.selectTrack:
+				exitMap();
+				break;
+			default: 
+				break;
 			}
-			
-			map.addPolyline(polyOptions);
-			//trackOverlay = new TrackOverlay(mapView, track);
-			//mapView.getOverlays().add(trackOverlay);
+	}
+   
+	private void exitMap() {
+		this.setResult(RESULT_OK);
+		this.finish();
+	}
+
+	private void showLayerOptions() {
+
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle(R.string.select_maptype)
+	           .setItems  (R.array.maptypes_array, new DialogInterface.OnClickListener() {
+	        	   
+	       		@Override
+	               public void onClick(DialogInterface dialog, int which) {
+	               // The 'which' argument contains the index position of the selected item
+	            	   map.setMapType(which + 1);
+	           }
+	    });
+		builder.show();
+	}
+	
+	private void updateTrack() {
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			Track currentTrack = (Track) extras.getSerializable(Statics.TRACK_DATA_KEY);
+			showOnMapAndZoomIn(currentTrack);
+		} else{
+			LatLng england = new LatLng(51, 0);
+			zoomIn(england);
 		}
+	}
+
+	private void showOnMapAndZoomIn(Track track) {
+		
+		PolylineOptions path= new PolylineOptions();
+		for(Coordinate coord : track){
+			path.add(new LatLng(coord.getLatitude(), coord.getLongitude()));	
+		}
+		
+		map.addPolyline(path);
+		
+		Coordinate origin = track.iterator().next();
+		zoomIn(new LatLng(origin.getLatitude(), origin.getLongitude()));
+	}
+	
+	private void zoomIn(LatLng latLng) {
+		
+		printMessage(latLng.toString());
+		
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng , 5));
+		map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+	}
+	
+	private void printMessage(String msg) {
+		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 	}
 }

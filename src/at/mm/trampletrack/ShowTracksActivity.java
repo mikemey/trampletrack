@@ -17,9 +17,6 @@ import at.mm.trampletrack.dto.Track;
 
 public class ShowTracksActivity extends ListActivity {
 	private List<String> trackText = null;
-
-	private static final String REMOVE_TRACK = "Delete track";
-	private static final String SHOW_TRACK = "Open track in map";
 	private DBAdapter dba;
 
 	/** Called when the activity is first created. */
@@ -50,19 +47,19 @@ public class ShowTracksActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		String listname = trackText.get(position);
 		final String trackname = listname.substring(0, listname.indexOf('[') - 1);
-		final CharSequence[] items = { SHOW_TRACK, REMOVE_TRACK };
+		final CharSequence[] items = { Statics.SHOW_TRACK, Statics.REMOVE_TRACK };
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(trackname);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int itemIndex) {
-				if (items[itemIndex].equals(SHOW_TRACK)) {
+				if (items[itemIndex].equals(Statics.SHOW_TRACK)) {
 					Track track = dba.getTrack(trackname);
 					Intent mapsActivity = new Intent(getApplicationContext(), GMapActivity.class);
 					mapsActivity.putExtra(Statics.TRACK_DATA_KEY, track);
 					startActivity(mapsActivity);
 				}
-				if (items[itemIndex].equals(REMOVE_TRACK)) {
+				if (items[itemIndex].equals(Statics.REMOVE_TRACK)) {
 					dba.deleteTrack(trackname);
 					refreshTracks();
 				}
