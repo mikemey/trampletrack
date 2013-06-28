@@ -91,7 +91,9 @@ public class GMapActivity extends Activity {
 	}
 
 	private void showOnMapAndZoomIn(Track track) {
-		
+		if( track == null) {
+			return;
+		}
 		PolylineOptions path= new PolylineOptions();
 		for(Coordinate coord : track){
 			path.add(new LatLng(coord.getLatitude(), coord.getLongitude()));	
