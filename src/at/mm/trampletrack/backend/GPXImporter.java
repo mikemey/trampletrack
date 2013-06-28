@@ -19,9 +19,7 @@ import at.mm.trampletrack.dto.Track;
 
 public class GPXImporter {
 	private static GPXImporter instance = null;
-	private final String TRACK_TAG = "trk";
 	private final String TRACK_NAME_TAG = "name";
-	private final String TRACK_SEG_TAG = "trkseg";
 	private final String TRACK_POINT_TAG = "trkpt";
 	private final String LAT_ATTR = "lat";
 	private final String LONG_ATTR = "lon";
