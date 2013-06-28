@@ -76,4 +76,5 @@ public class StartActivity extends Activity {
 		});
 		builder.show();
 	}
+
 }

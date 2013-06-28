@@ -2,6 +2,9 @@ package at.mm.trampletrack;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,6 +15,7 @@ import android.app.ListActivity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,6 +36,51 @@ public class ImportActivity extends ListActivity {
 		setContentView(R.layout.var_list);
 		myPath = (TextView) findViewById(R.id.list);
 		getDir(root);
+		
+		copyDefaultTrackOnSDCardForTest();
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+
+		final File file = new File(path.get(position));
+		if (file.isDirectory()) {
+			getDir(path.get(position));
+		} else {
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setIcon(R.drawable.icon);
+			builder.setTitle("Import file:");
+			builder.setMessage(file.getName());
+			builder.setNegativeButton("Cancel", null);
+			builder.setPositiveButton("Import File", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					importTrackFile(file);
+				}
+			});
+			builder.show();
+		}
+	}
+
+	private void copyDefaultTrackOnSDCardForTest() {
+		try {
+			File sdCard = Environment.getExternalStorageDirectory();
+			File dir = new File (sdCard.getAbsolutePath() + "/testData");
+			dir.mkdirs();
+			String fileName = "SWCP13.gpx";
+			File file = new File(dir, fileName);
+			InputStream in = getAssets().open(fileName);
+			FileOutputStream f = new FileOutputStream(file);
+			
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = in.read(buffer)) > 0) {
+                f.write(buffer, 0, len1);
+            }
+            f.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void getDir(String dirPath) {
@@ -79,29 +128,7 @@ public class ImportActivity extends ListActivity {
 		ArrayAdapter<String> fileList = new ArrayAdapter<String>(this, R.layout.row, item);
 		setListAdapter(fileList);
 	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		final File file = new File(path.get(position));
-		if (file.isDirectory()) {
-			getDir(path.get(position));
-		} else {
-			Builder builder = new AlertDialog.Builder(this);
-			builder.setIcon(R.drawable.icon);
-			builder.setTitle("Import file:");
-			builder.setMessage(file.getName());
-			builder.setNegativeButton("Cancel", null);
-			builder.setPositiveButton("Import File", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					importTrackFile(file);
-				}
-			});
-			builder.show();
-		}
-	}
-
+	
 	private void importTrackFile(File importFile) {
 		String msg = null;
 		try {
